@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>dblclick event for the mouse pointer type</title>
+    <link rel="author" title="Google" href="http://www.google.com/" />
+    <script src="/resources/testharness.js"></script>
+    <script src="/resources/testharnessreport.js"></script>
+    <script src="/resources/testdriver.js"></script>
+    <script src="/resources/testdriver-actions.js"></script>
+    <script src="/resources/testdriver-vendor.js"></script>
+    <style>
+    #target
+    {
+        background-color: green;
+        width: 200px;
+        height: 200px;
+    }
+    </style>
+  </head>
+  <body>
+    <p>Double-click on the green box with the left mouse button.</p>
+    <div id="target"></div>
+    <script>
+        setup({ single_test: true });
+        var elem = document.getElementById("target");
+        elem.addEventListener("dblclick", function(e) {
+            assert_equals(e.target.id, "target");
+            assert_equals(e.detail, 2);
+            done();
+        });
+        new test_driver.Actions()
+          .pointerMove(0, 0, {origin: elem})
+          .pointerDown()
+          .pointerUp()
+          .pointerDown()
+          .pointerUp()
+          .send();
+    </script>
+  </body>
+</html>
