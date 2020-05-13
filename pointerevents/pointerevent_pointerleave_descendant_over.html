@@ -30,10 +30,11 @@
             var eventTested = false;
             var pointerleaveReceived = false;
             var detected_pointertypes = {};
+            var actions_promise;
 
             add_completion_callback(showPointerTypes);
 
-            function run() {
+            async function run() {
                 var target0 = document.getElementById("target0");
 
                 // The pointerleave event must not be dispatched when the pointer enters a child element without leaving the hit test boundaries of the parent. (as distinct from pointerout)
@@ -54,12 +55,13 @@
                 });
 
                 // Inject mouse inputs.
-                new test_driver.Actions()
+                await new test_driver.Actions()
                     .pointerMove(0, 0, {origin: target0})
                     .pointerMove(0, 0, {origin: target1})
                     .pointerDown()
                     .pointerUp()
                     .send();
+                await resolveWhen(()=>{return eventTested;});
             }
         </script>
         <h1>Pointer Events pointerleave tests</h1>
